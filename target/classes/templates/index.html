@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<body>
+<div layout:fragment="conteudo">
+    <div class="hero">
+        <h2>Sistema de Gerenciamento Bibliográfico</h2>
+        <p>Organize e gerencie sua coleção de livros, autores e editoras com elegância e eficiência</p>
+    </div>
+
+    <div class="cards-grid">
+        <div class="card">
+            <h3>Autores</h3>
+            <p>Gerencie informações sobre autores, incluindo nome, país de origem e biografia.</p>
+            <a href="/autores/view" class="btn">Ver Autores</a>
+        </div>
+
+        <div class="card">
+            <h3>Editoras</h3>
+            <p>Cadastre e visualize editoras, com informações sobre localização e contato.</p>
+            <a href="/editoras/view" class="btn">Ver Editoras</a>
+        </div>
+
+        <div class="card">
+            <h3>Livros</h3>
+            <p>Catálogo completo de livros com detalhes sobre título, autor, editora e ano.</p>
+            <a href="/livros/view" class="btn">Ver Livros</a>
+        </div>
+
+        <div class="card">
+            <h3>Consultas</h3>
+            <p>Execute queries avançadas para análise e busca de informações no sistema.</p>
+            <a href="/queries" class="btn btn-secondary">Ver Queries</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

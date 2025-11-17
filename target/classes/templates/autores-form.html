@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Autores</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <div class="form-container">
+        <h2 th:text="${autor.id} != null ? 'Editar Autor' : 'Cadastrar Novo Autor'"></h2>
+
+        <form th:action="@{/autores/salvar}" method="post">
+            <input type="hidden" name="id" th:value="${autor.id}">
+
+            <div class="form-group">
+                <label>Nome</label>
+                <input type="text" name="nome" th:value="${autor.nome}" required>
+            </div>
+
+            <div class="form-group">
+                <label>País</label>
+                <input type="text" name="pais" th:value="${autor.pais}">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn">Salvar</button>
+                <a href="/autores/view" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciamento de Dados - Seed</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <div class="hero">
+        <h2>Gerenciamento de Dados</h2>
+        <p>Limpar ou popular o banco de dados para desenvolvimento</p>
+    </div>
+
+    <div th:if="${mensagemSucesso}" class="alert alert-success">
+        <span>✓</span>
+        <span th:text="${mensagemSucesso}"></span>
+    </div>
+
+    <div th:if="${mensagemErro}" class="alert alert-error">
+        <span>✗</span>
+        <span th:text="${mensagemErro}"></span>
+    </div>
+
+    <div th:if="${mensagemAviso}" class="alert alert-warning">
+        <span>⚠</span>
+        <span th:text="${mensagemAviso}"></span>
+    </div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number" th:text="${totalAutores}">0</div>
+            <div class="stat-label">Autores</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" th:text="${totalEditoras}">0</div>
+            <div class="stat-label">Editoras</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" th:text="${totalLivros}">0</div>
+            <div class="stat-label">Livros</div>
+        </div>
+    </div>
+
+    <div class="action-cards">
+        <div class="action-card">
+            <h3>Limpar Banco de Dados</h3>
+            <p>Remove todos os dados do banco de dados (autores, editoras e livros).</p>
+            <form th:action="@{/seed/clear}" method="post" onsubmit="return confirm('Tem certeza que deseja limpar os dados do banco?');">
+                <button type="submit" class="btn-success">Limpar Banco de Dados</button>
+            </form>
+        </div>
+
+        <div class="action-card">
+            <h3>Popular Banco de Dados</h3>
+            <p>Adiciona dados fictícios ao banco de dados para testes: 5 autores, 4 editoras e 12 livros.</p>
+            <form th:action="@{/seed/populate}" method="post">
+                <button type="submit" class="btn-success">Popular Banco de Dados</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

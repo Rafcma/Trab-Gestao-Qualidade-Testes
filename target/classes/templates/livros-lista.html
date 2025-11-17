@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Livros</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <div class="hero">
+        <h2>Catálogo de Livros</h2>
+        <p>Gerencie todos os livros cadastrados no sistema</p>
+    </div>
+
+    <div class="text-center mb-2">
+        <a href="/livros/formulario" class="btn">+ Adicionar Novo Livro</a>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Título</th>
+                <th>Ano</th>
+                <th>Autor</th>
+                <th>Editora</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="livro : ${livros}">
+                <td th:text="${livro.titulo}"></td>
+                <td th:text="${livro.anoPublicacao}"></td>
+                <td th:text="${livro.autor.nome}"></td>
+                <td th:text="${livro.editora.nome}"></td>
+                <td>
+                    <a th:href="@{'/livros/editar/' + ${livro.id}}" class="btn">Editar</a>
+                    <a th:href="@{'/livros/deletar/' + ${livro.id}}" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

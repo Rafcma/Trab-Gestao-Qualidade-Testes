@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Livros</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <div class="form-container">
+        <h2 th:text="${livro.id} != null ? 'Editar Livro' : 'Cadastrar Novo Livro'"></h2>
+
+        <form th:action="@{/livros/salvar}" method="post">
+            <input type="hidden" name="id" th:value="${livro.id}">
+
+            <div class="form-group">
+                <label>Título</label>
+                <input type="text" name="titulo" th:value="${livro.titulo}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Ano de Publicação</label>
+                <input type="number" name="anoPublicacao" th:value="${livro.anoPublicacao}">
+            </div>
+
+            <div class="form-group">
+                <label>ISBN</label>
+                <input type="text" name="isbn" th:value="${livro.isbn}">
+            </div>
+
+            <div class="form-group">
+                <label>Autor</label>
+                <select name="autorId" required>
+                    <option value="">Selecione um autor</option>
+                    <option th:each="autor : ${autores}"
+                            th:value="${autor.id}"
+                            th:text="${autor.nome}"
+                            th:selected="${livro.autor != null and autor.id == livro.autor.id}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Editora</label>
+                <select name="editoraId" required>
+                    <option value="">Selecione uma editora</option>
+                    <option th:each="editora : ${editoras}"
+                            th:value="${editora.id}"
+                            th:text="${editora.nome}"
+                            th:selected="${livro.editora != null and editora.id == livro.editora.id}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn">Salvar</button>
+                <a href="/livros/view" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

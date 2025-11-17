@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Editoras</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <div class="hero">
+        <h2>Editoras Cadastradas</h2>
+        <p>Gerencie as editoras da sua biblioteca</p>
+    </div>
+
+    <div class="text-center mb-2">
+        <a href="/editoras/formulario" class="btn">+ Adicionar Nova Editora</a>
+    </div>
+
+    <div class="table-container">
+        <table>
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Cidade</th>
+                <th>Ações</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="editora : ${editoras}">
+                <td th:text="${editora.nome}"></td>
+                <td th:text="${editora.cidade}"></td>
+                <td>
+                    <a th:href="@{'/editoras/editar/' + ${editora.id}}" class="btn">Editar</a>
+                    <a th:href="@{'/editoras/deletar/' + ${editora.id}}" class="btn btn-danger">Excluir</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

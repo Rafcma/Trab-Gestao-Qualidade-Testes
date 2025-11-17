@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<head>
+    <meta charset="UTF-8">
+    <title>Demonstração das Queries</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+    <div class="hero">
+        <h2>Demonstração de Queries</h2>
+        <p>Explore os diferentes tipos de consultas ao banco de dados: Derived Queries, JPQL e Native SQL</p>
+    </div>
+
+    <div class="query-accordion">
+        <!-- Query 1: Buscar Autores por Nome -->
+        <div class="query-item" th:classappend="${activeQuery == 'query1'} ? 'active'" id="query1">
+            <button class="query-button" onclick="toggleQuery('query1')" type="button">
+                <div class="query-button-content">
+                    <span>Buscar Autores por Nome</span>
+                    <span class="query-badge">Derived Query</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Derived Query que busca autores cujo nome contenha o texto informado, ignorando maiúsculas/minúsculas.
+                        <span class="query-details-toggle" onclick="toggleDetails('details1')">Ver detalhes técnicos</span>
+                        <div class="query-technical-details" id="details1">
+                            <strong>Método:</strong> findByNomeContainingIgnoreCase(String nome)
+                            <div class="query-code">List&lt;Autor&gt; findByNomeContainingIgnoreCase(String nome);</div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/queries/executar/autores-por-nome}" method="post" class="query-form">
+                        <label for="nomeAutor">Nome do Autor:</label>
+                        <input type="text" id="nomeAutor" name="nomeAutor" placeholder="Digite parte do nome" required>
+                        <button type="submit">Executar Query</button>
+                    </form>
+
+                    <div th:if="${activeQuery == 'query1' and resultados != null}" class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h3 th:text="${queryTitulo}">Resultados</h3>
+                                <div class="results-meta">
+                                    <span class="query-info-badge" th:text="${queryTipo}"></span>
+                                    <span th:text="${totalResultados} + ' resultado' + (${totalResultados} != 1 ? 's' : '')"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <div class="search-param" th:if="${parametroBusca != null}">
+                                <strong>Parâmetro de busca:</strong> <span th:text="${parametroBusca}"></span>
+                            </div>
+
+                            <div th:if="${totalResultados > 0}">
+                                <table class="result-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>País</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="autor : ${resultados}">
+                                        <td th:text="${autor.nome}"></td>
+                                        <td th:text="${autor.pais ?: '-'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div th:if="${totalResultados == 0}" class="no-results">
+                                Nenhum resultado encontrado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Query 2: Buscar Autores por País -->
+        <div class="query-item" th:classappend="${activeQuery == 'query2'} ? 'active'" id="query2">
+            <button class="query-button" onclick="toggleQuery('query2')" type="button">
+                <div class="query-button-content">
+                    <span>Buscar Autores por País</span>
+                    <span class="query-badge">Derived Query</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Derived Query que filtra autores por país de origem.
+                        <span class="query-details-toggle" onclick="toggleDetails('details2')">Ver detalhes técnicos</span>
+                        <div class="query-technical-details" id="details2">
+                            <strong>Método:</strong> findByPaisIgnoreCase(String pais)
+                            <div class="query-code">List&lt;Autor&gt; findByPaisIgnoreCase(String pais);</div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/queries/executar/autores-por-pais}" method="post" class="query-form">
+                        <label for="paisAutor">País:</label>
+                        <select id="paisAutor" name="paisAutor" required>
+                            <option value="">Selecione um país</option>
+                            <option th:each="pais : ${todosPaises}" th:value="${pais}" th:text="${pais}"></option>
+                        </select>
+                        <button type="submit">Executar Query</button>
+                    </form>
+
+                    <div th:if="${activeQuery == 'query2' and resultados != null}" class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h3 th:text="${queryTitulo}">Resultados</h3>
+                                <div class="results-meta">
+                                    <span class="query-info-badge" th:text="${queryTipo}"></span>
+                                    <span th:text="${totalResultados} + ' resultado' + (${totalResultados} != 1 ? 's' : '')"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <div class="search-param" th:if="${parametroBusca != null}">
+                                <strong>Parâmetro de busca:</strong> <span th:text="${parametroBusca}"></span>
+                            </div>
+
+                            <div th:if="${totalResultados > 0}">
+                                <table class="result-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>País</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="autor : ${resultados}">
+                                        <td th:text="${autor.nome}"></td>
+                                        <td th:text="${autor.pais ?: '-'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div th:if="${totalResultados == 0}" class="no-results">
+                                Nenhum resultado encontrado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Query 3: Livros por Autor -->
+        <div class="query-item" th:classappend="${activeQuery == 'query3'} ? 'active'" id="query3">
+            <button class="query-button" onclick="toggleQuery('query3')" type="button">
+                <div class="query-button-content">
+                    <span>Livros por Autor</span>
+                    <span class="query-badge">JPQL Query</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        JPQL que busca todos os livros de um autor específico.
+                        <span class="query-details-toggle" onclick="toggleDetails('details3')">Ver detalhes técnicos</span>
+                        <div class="query-technical-details" id="details3">
+                            <strong>Descrição:</strong> Busca todos os livros escritos por um autor específico usando JPQL.
+                            <div class="query-code">@Query("SELECT l FROM Livro l WHERE l.autor.id = :autorId")
+                                List&lt;Livro&gt; findByAutorIdJPQL(@Param("autorId") Long autorId);</div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/queries/executar/livros-por-autor}" method="post" class="query-form">
+                        <label for="autorId">Autor:</label>
+                        <select id="autorId" name="autorId" required>
+                            <option value="">Selecione um autor</option>
+                            <option th:each="autor : ${todosAutores}" th:value="${autor.id}" th:text="${autor.nome}"></option>
+                        </select>
+                        <button type="submit">Executar Query</button>
+                    </form>
+
+                    <div th:if="${activeQuery == 'query3' and resultados != null}" class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h3 th:text="${queryTitulo}">Resultados</h3>
+                                <div class="results-meta">
+                                    <span class="query-info-badge" th:text="${queryTipo}"></span>
+                                    <span th:text="${totalResultados} + ' resultado' + (${totalResultados} != 1 ? 's' : '')"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <div class="search-param" th:if="${parametroBusca != null}">
+                                <strong>Parâmetro de busca:</strong> <span th:text="${parametroBusca}"></span>
+                            </div>
+
+                            <div th:if="${totalResultados > 0}">
+                                <table class="result-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Autor</th>
+                                        <th>Editora</th>
+                                        <th>Ano</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="livro : ${resultados}">
+                                        <td th:text="${livro.titulo}"></td>
+                                        <td th:text="${livro.autor?.nome ?: '-'}"></td>
+                                        <td th:text="${livro.editora?.nome ?: '-'}"></td>
+                                        <td th:text="${livro.anoPublicacao ?: '-'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div th:if="${totalResultados == 0}" class="no-results">
+                                Nenhum resultado encontrado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Query 4: Estatísticas de Autores por Editora -->
+        <div class="query-item" th:classappend="${activeQuery == 'query4'} ? 'active'" id="query4">
+            <button class="query-button" onclick="toggleQuery('query4')" type="button">
+                <div class="query-button-content">
+                    <span>Estatísticas de Autores por Editora</span>
+                    <span class="query-badge">JPQL Agregação</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        JPQL com agregação que mostra quantidade de autores distintos por editora.
+                        <span class="query-details-toggle" onclick="toggleDetails('details4')">Ver detalhes técnicos</span>
+                        <div class="query-technical-details" id="details4">
+                            <strong>Descrição:</strong> Conta quantos autores distintos cada editora publicou usando COUNT DISTINCT e GROUP BY.
+                            <div class="query-code">@Query("SELECT e.nome AS nome, COUNT(DISTINCT l.autor.id) AS total
+                                FROM Livro l JOIN l.editora e GROUP BY e.id, e.nome ORDER BY COUNT(DISTINCT l.autor.id) DESC")
+                                List&lt;EditoraAutorCount&gt; listarQuantidadeDeAutoresPorEditora();</div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/queries/executar/estatisticas-autores-editora}" method="post" class="query-form">
+                        <button type="submit">Executar Query</button>
+                    </form>
+
+                    <div th:if="${activeQuery == 'query4' and resultados != null}" class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h3 th:text="${queryTitulo}">Resultados</h3>
+                                <div class="results-meta">
+                                    <span class="query-info-badge" th:text="${queryTipo}"></span>
+                                    <span th:text="${totalResultados} + ' resultado' + (${totalResultados} != 1 ? 's' : '')"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <div th:if="${totalResultados > 0}">
+                                <table class="result-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Editora</th>
+                                        <th>Total de Autores</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="stat : ${resultados}">
+                                        <td th:text="${stat.nome}"></td>
+                                        <td th:text="${stat.total}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div th:if="${totalResultados == 0}" class="no-results">
+                                Nenhum resultado encontrado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Query 5: Contar Livros por Editora -->
+        <div class="query-item" th:classappend="${activeQuery == 'query5'} ? 'active'" id="query5">
+            <button class="query-button" onclick="toggleQuery('query5')" type="button">
+                <div class="query-button-content">
+                    <span>Contar Livros por Editora</span>
+                    <span class="query-badge">Native Query</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Native Query que conta livros de uma editora específica.
+                        <span class="query-details-toggle" onclick="toggleDetails('details5')">Ver detalhes técnicos</span>
+                        <div class="query-technical-details" id="details5">
+                            <strong>Descrição:</strong> Conta o total de livros de uma editora usando SQL nativo.
+                            <div class="query-code">@Query(value = "SELECT COUNT(*) FROM livro WHERE editora_id = :editoraId", nativeQuery = true)
+                                long countByEditoraIdNative(@Param("editoraId") Long editoraId);</div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/queries/executar/contar-livros-editora}" method="post" class="query-form">
+                        <label for="editoraIdCount">Editora:</label>
+                        <select id="editoraIdCount" name="editoraIdCount" required>
+                            <option value="">Selecione uma editora</option>
+                            <option th:each="editora : ${todasEditoras}" th:value="${editora.id}" th:text="${editora.nome}"></option>
+                        </select>
+                        <button type="submit">Executar Query</button>
+                    </form>
+
+                    <div th:if="${activeQuery == 'query5' and resultados != null}" class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h3 th:text="${queryTitulo}">Resultados</h3>
+                                <div class="results-meta">
+                                    <span class="query-info-badge" th:text="${queryTipo}"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <div class="search-param" th:if="${parametroBusca != null}">
+                                <strong>Parâmetro de busca:</strong> <span th:text="${parametroBusca}"></span>
+                            </div>
+
+                            <div class="count-display">
+                                <div class="count-number" th:text="${resultados}"></div>
+                                <div class="count-label">livros encontrados</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Query 6: Livros por Editora -->
+        <div class="query-item" th:classappend="${activeQuery == 'query6'} ? 'active'" id="query6">
+            <button class="query-button" onclick="toggleQuery('query6')" type="button">
+                <div class="query-button-content">
+                    <span>Livros por Editora</span>
+                    <span class="query-badge">JPQL Query</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        JPQL que busca todos os livros de uma editora específica.
+                        <span class="query-details-toggle" onclick="toggleDetails('details6')">Ver detalhes técnicos</span>
+                        <div class="query-technical-details" id="details6">
+                            <strong>Descrição:</strong> Busca todos os livros publicados por uma editora específica.
+                            <div class="query-code">@Query("SELECT l FROM Livro l WHERE l.editora.id = :editoraId")
+                                List&lt;Livro&gt; findByEditoraIdJPQL(@Param("editoraId") Long editoraId);</div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/queries/executar/livros-por-editora}" method="post" class="query-form">
+                        <label for="editoraIdList">Editora:</label>
+                        <select id="editoraIdList" name="editoraIdList" required>
+                            <option value="">Selecione uma editora</option>
+                            <option th:each="editora : ${todasEditoras}" th:value="${editora.id}" th:text="${editora.nome}"></option>
+                        </select>
+                        <button type="submit">Executar Query</button>
+                    </form>
+
+                    <div th:if="${activeQuery == 'query6' and resultados != null}" class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h3 th:text="${queryTitulo}">Resultados</h3>
+                                <div class="results-meta">
+                                    <span class="query-info-badge" th:text="${queryTipo}"></span>
+                                    <span th:text="${totalResultados} + ' resultado' + (${totalResultados} != 1 ? 's' : '')"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <div class="search-param" th:if="${parametroBusca != null}">
+                                <strong>Parâmetro de busca:</strong> <span th:text="${parametroBusca}"></span>
+                            </div>
+
+                            <div th:if="${totalResultados > 0}">
+                                <table class="result-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Autor</th>
+                                        <th>Editora</th>
+                                        <th>Ano</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="livro : ${resultados}">
+                                        <td th:text="${livro.titulo}"></td>
+                                        <td th:text="${livro.autor?.nome ?: '-'}"></td>
+                                        <td th:text="${livro.editora?.nome ?: '-'}"></td>
+                                        <td th:text="${livro.anoPublicacao ?: '-'}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div th:if="${totalResultados == 0}" class="no-results">
+                                Nenhum resultado encontrado
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Minimal JavaScript for accordion functionality -->
+    <script th:inline="javascript">
+        function toggleQuery(queryId) {
+            const item = document.getElementById(queryId);
+            const wasActive = item.classList.contains('active');
+
+            // Close all other queries
+            document.querySelectorAll('.query-item').forEach(el => {
+                if (el.id !== queryId) {
+                    el.classList.remove('active');
+                }
+            });
+
+            // Toggle current query
+            if (wasActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
+        }
+
+        function toggleDetails(detailsId) {
+            const details = document.getElementById(detailsId);
+            details.classList.toggle('expanded');
+        }
+
+        window.addEventListener('DOMContentLoaded', function() {
+            const activeQuery = /*[[${activeQuery}]]*/ null;
+            if (activeQuery) {
+                const element = document.getElementById(activeQuery);
+                if (element) {
+                    // Scroll to element with offset to account for any spacing
+                    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+                    const offsetPosition = elementPosition - 20;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    </script>
+</div>
+</body>
+</html>

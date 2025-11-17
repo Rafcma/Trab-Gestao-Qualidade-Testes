@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<body>
+<div layout:fragment="conteudo">
+    <style>
+        .dev-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .dev-section {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .dev-section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .dev-section h3 {
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        .dev-section h4 {
+            color: #7f8c8d;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+        }
+        .endpoint {
+            background: #e8f4f8;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 5px 0;
+            font-family: monospace;
+        }
+        .method {
+            font-weight: bold;
+            color: #27ae60;
+            margin-right: 10px;
+        }
+        .method.post { color: #f39c12; }
+        .method.put { color: #3498db; }
+        .method.delete { color: #e74c3c; }
+        .description {
+            color: #555;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+        .table-container {
+            overflow-x: auto;
+            margin: 15px 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th {
+            background: #34495e;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #ddd;
+        }
+        tr:hover {
+            background: #f5f5f5;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .badge-rest { background: #3498db; color: white; }
+        .badge-view { background: #27ae60; color: white; }
+        .badge-query { background: #9b59b6; color: white; }
+        .badge-derived { background: #f39c12; color: white; }
+        .badge-jpql { background: #e67e22; color: white; }
+        .badge-native { background: #c0392b; color: white; }
+        ul {
+            line-height: 1.8;
+        }
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+    </style>
+
+    <div class="dev-container">
+        <div class="dev-section">
+            <h2>📚 Documentação Técnica - Sistema de Biblioteca</h2>
+            <p class="description">
+                Esta página contém a documentação completa do sistema, incluindo explicações detalhadas sobre
+                controllers, repositories, queries e views. Destinada a desenvolvedores e testadores.
+            </p>
+        </div>
+
+        <div class="dev-section">
+            <h2>🎮 Controllers</h2>
+            <p class="description">
+                Os controllers são responsáveis por receber requisições HTTP e coordenar a lógica de negócio.
+                O sistema possui dois tipos: <strong>REST Controllers</strong> (API JSON) e <strong>View Controllers</strong> (páginas HTML).
+            </p>
+
+            <h3>1. AutorController <span class="badge badge-rest">REST API</span></h3>
+            <p class="description">
+                Controller REST que gerencia operações CRUD de autores através de endpoints JSON.
+                Implementa validação de dados e verificação de integridade referencial antes de deletar.
+            </p>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Método</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/autores</code></td>
+                        <td><span class="method">GET</span></td>
+                        <td>Lista todos os autores cadastrados</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/{id}</code></td>
+                        <td><span class="method">GET</span></td>
+                        <td>Busca um autor específico por ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores</code></td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Cria um novo autor (valida @NotBlank no nome)</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/{id}</code></td>
+                        <td><span class="method put">PUT</span></td>
+                        <td>Atualiza dados de um autor existente</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/{id}</code></td>
+                        <td><span class="method delete">DELETE</span></td>
+                        <td>Remove autor (verifica se não há livros associados)</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="code-block">
+                <strong>Proteção de Integridade:</strong><br>
+                Antes de deletar um autor, o sistema verifica se existem livros associados.<br>
+                Se houver, lança DataIntegrityException impedindo a exclusão.
+            </div>
+
+            <h3>2. EditoraController <span class="badge badge-rest">REST API</span></h3>
+            <p class="description">
+                Controller REST para gerenciamento de editoras. Implementa operações CRUD completas
+                com validação de dados de entrada.
+            </p>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Método</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras</code></td>
+                        <td><span class="method">GET</span></td>
+                        <td>Lista todas as editoras cadastradas</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/{id}</code></td>
+                        <td><span class="method">GET</span></td>
+                        <td>Busca uma editora específica por ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras</code></td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Cria uma nova editora (valida @NotBlank no nome)</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/{id}</code></td>
+                        <td><span class="method put">PUT</span></td>
+                        <td>Atualiza dados de uma editora existente</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/{id}</code></td>
+                        <td><span class="method delete">DELETE</span></td>
+                        <td>Remove uma editora do sistema</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>3. LivroController <span class="badge badge-rest">REST API</span></h3>
+            <p class="description">
+                Controller REST mais complexo, gerencia livros e seus relacionamentos com autores e editoras.
+                Utiliza DTO (LivroDTO) para receber dados e valida a existência de autor e editora antes de criar/atualizar.
+            </p>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Método</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/livros</code></td>
+                        <td><span class="method">GET</span></td>
+                        <td>Lista todos os livros com autor e editora</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/{id}</code></td>
+                        <td><span class="method">GET</span></td>
+                        <td>Busca um livro específico por ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/search?titulo=X</code></td>
+                        <td><span class="method">GET</span></td>
+                        <td>Busca livros por título (derived query)</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros</code></td>
+                        <td><span class="method post">POST</span></td>
+                        <td>Cria novo livro vinculando autor e editora</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/{id}</code></td>
+                        <td><span class="method put">PUT</span></td>
+                        <td>Atualiza livro e seus relacionamentos</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/{id}</code></td>
+                        <td><span class="method delete">DELETE</span></td>
+                        <td>Remove um livro do sistema</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="code-block">
+                <strong>Uso de DTO:</strong><br>
+                LivroDTO contém: titulo, anoPublicacao, isbn, autorId, editoraId<br>
+                O controller valida se autor e editora existem antes de salvar.
+            </div>
+
+            <h3>4. AutorViewController <span class="badge badge-view">VIEW</span></h3>
+            <p class="description">
+                Controller de visualização para interface web de autores. Renderiza páginas HTML usando Thymeleaf
+                e gerencia formulários de criação/edição.
+            </p>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Rota</th>
+                        <th>Método</th>
+                        <th>View</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/view</code></td>
+                        <td>GET</td>
+                        <td>autores-lista.html</td>
+                        <td>Exibe lista de todos os autores</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/formulario</code></td>
+                        <td>GET</td>
+                        <td>autores-form.html</td>
+                        <td>Exibe formulário para novo autor</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/editar/{id}</code></td>
+                        <td>GET</td>
+                        <td>autores-form.html</td>
+                        <td>Exibe formulário preenchido para edição</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/salvar</code></td>
+                        <td>POST</td>
+                        <td>redirect</td>
+                        <td>Salva/atualiza autor e redireciona para lista</td>
+                    </tr>
+                    <tr>
+                        <td><code>/autores/deletar/{id}</code></td>
+                        <td>GET</td>
+                        <td>redirect</td>
+                        <td>Deleta autor e redireciona para lista</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>5. EditoraViewController <span class="badge badge-view">VIEW</span></h3>
+            <p class="description">
+                Controller de visualização para interface web de editoras. Estrutura idêntica ao AutorViewController,
+                mas gerencia entidades Editora.
+            </p>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Rota</th>
+                        <th>Método</th>
+                        <th>View</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/view</code></td>
+                        <td>GET</td>
+                        <td>editoras-lista.html</td>
+                        <td>Exibe lista de todas as editoras</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/formulario</code></td>
+                        <td>GET</td>
+                        <td>editoras-form.html</td>
+                        <td>Exibe formulário para nova editora</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/editar/{id}</code></td>
+                        <td>GET</td>
+                        <td>editoras-form.html</td>
+                        <td>Exibe formulário preenchido para edição</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/salvar</code></td>
+                        <td>POST</td>
+                        <td>redirect</td>
+                        <td>Salva/atualiza editora e redireciona</td>
+                    </tr>
+                    <tr>
+                        <td><code>/editoras/deletar/{id}</code></td>
+                        <td>GET</td>
+                        <td>redirect</td>
+                        <td>Deleta editora e redireciona</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>6. LivroViewController <span class="badge badge-view">VIEW</span></h3>
+            <p class="description">
+                Controller de visualização para livros. Mais complexo que os outros view controllers pois precisa
+                carregar listas de autores e editoras para os dropdowns do formulário.
+            </p>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Rota</th>
+                        <th>Método</th>
+                        <th>View</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/view</code></td>
+                        <td>GET</td>
+                        <td>livros-lista.html</td>
+                        <td>Exibe lista de todos os livros</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/formulario</code></td>
+                        <td>GET</td>
+                        <td>livros-form.html</td>
+                        <td>Formulário com dropdowns de autores/editoras</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/editar/{id}</code></td>
+                        <td>GET</td>
+                        <td>livros-form.html</td>
+                        <td>Formulário preenchido para edição</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/salvar</code></td>
+                        <td>POST</td>
+                        <td>redirect</td>
+                        <td>Salva livro vinculando autor e editora</td>
+                    </tr>
+                    <tr>
+                        <td><code>/livros/deletar/{id}</code></td>
+                        <td>GET</td>
+                        <td>redirect</td>
+                        <td>Deleta livro e redireciona</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="code-block">
+                <strong>Diferencial:</strong><br>
+                Recebe parâmetros separados (@RequestParam) em vez de objeto completo<br>
+                Busca autor e editora pelos IDs e vincula ao livro antes de salvar
+            </div>
+
+            <h3>7. QueryController <span class="badge badge-query">QUERIES</span></h3>
+            <p class="description">
+                Controller especializado em executar e demonstrar diferentes tipos de queries do Spring Data JPA.
+                Oferece tanto endpoints REST quanto interface web para visualização de resultados.
+            </p>
+            <h4>Endpoints REST (API JSON):</h4>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Endpoint</th>
+                        <th>Tipo Query</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/queries/api/derived/autores-por-nome</code></td>
+                        <td><span class="badge badge-derived">Derived</span></td>
+                        <td>Busca autores por nome (parcial)</td>
+                    </tr>
+                    <tr>
+                        <td><code>/queries/api/derived/autores-por-pais</code></td>
+                        <td><span class="badge badge-derived">Derived</span></td>
+                        <td>Busca autores por país</td>
+                    </tr>
+                    <tr>
+                        <td><code>/queries/api/jpql/livros-por-autor</code></td>
+                        <td><span class="badge badge-jpql">JPQL</span></td>
+                        <td>Lista livros de um autor específico</td>
+                    </tr>
+                    <tr>
+                        <td><code>/queries/api/jpql/estatisticas-editora</code></td>
+                        <td><span class="badge badge-jpql">JPQL</span></td>
+                        <td>Estatísticas de autores por editora</td>
+                    </tr>
+                    <tr>
+                        <td><code>/queries/api/native/contar-livros-editora</code></td>
+                        <td><span class="badge badge-native">Native</span></td>
+                        <td>Conta livros de uma editora (SQL puro)</td>
+                    </tr>
+                    <tr>
+                        <td><code>/queries/api/jpql/livros-por-editora</code></td>
+                        <td><span class="badge badge-jpql">JPQL</span></td>
+                        <td>Lista livros de uma editora</td>
+                    </tr>
+                </table>
+            </div>
+            <h4>Rotas de Visualização Web:</h4>
+            <ul>
+                <li><code>/queries</code> - Página principal com formulários para todas as queries</li>
+                <li><code>/queries/executar/*</code> - Endpoints POST que executam queries e exibem resultados</li>
+            </ul>
+            <div class="code-block">
+                <strong>Método prepararModel():</strong><br>
+                Carrega dados necessários para os dropdowns (autores, editoras, países)<br>
+                Chamado antes de renderizar a página para garantir dados disponíveis
+            </div>
+
+            <h3>8. HomeController <span class="badge badge-view">VIEW</span></h3>
+            <p class="description">
+                Controller simples que renderiza a página inicial do sistema.
+            </p>
+            <div class="code-block">
+                GET / → templates/index.html (página inicial com cards de navegação)
+            </div>
+
+            <h3>9. SeedController <span class="badge badge-view">VIEW</span></h3>
+            <p class="description">
+                Controller para gerenciamento de dados de teste. Permite popular o banco com dados de exemplo
+                ou limpar todos os dados. Útil para desenvolvimento e testes.
+            </p>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Rota</th>
+                        <th>Método</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>/seed</code></td>
+                        <td>GET</td>
+                        <td>Exibe página com contadores e botões</td>
+                    </tr>
+                    <tr>
+                        <td><code>/seed/populate</code></td>
+                        <td>POST</td>
+                        <td>Popula banco com 5 autores, 4 editoras e 12 livros</td>
+                    </tr>
+                    <tr>
+                        <td><code>/seed/clear</code></td>
+                        <td>POST</td>
+                        <td>Limpa todos os dados (respeita foreign keys)</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="code-block">
+                <strong>Dados de Exemplo:</strong><br>
+                Autores: Machado de Assis, José Saramago, Clarice Lispector, Fernando Pessoa, Jorge Amado<br>
+                Editoras: Companhia das Letras, Porto Editora, Record, Globo Livros<br>
+                Livros: Dom Casmurro, Ensaio sobre a Cegueira, A Hora da Estrela, etc.
+            </div>
+        </div>
+
+        <div class="dev-section">
+            <h2>🗄️ Repositories</h2>
+            <p class="description">
+                Repositories são interfaces que estendem JpaRepository e fornecem métodos para acesso ao banco de dados.
+                O Spring Data JPA implementa automaticamente os métodos CRUD básicos e permite criar queries customizadas.
+            </p>
+
+            <h3>1. AutorRepository</h3>
+            <p class="description">
+                Interface para acesso aos dados de autores. Além dos métodos herdados de JpaRepository
+                (save, findAll, findById, delete, etc.), possui queries customizadas.
+            </p>
+            <div class="code-block">
+                <strong>Métodos Herdados (JpaRepository):</strong><br>
+                • save(Autor) - Salva ou atualiza<br>
+                • findAll() - Lista todos<br>
+                • findById(Long) - Busca por ID<br>
+                • deleteById(Long) - Deleta por ID<br>
+                • count() - Conta total de registros
+            </div>
+            <h4>Queries Customizadas:</h4>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Método</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>findByNomeContainingIgnoreCase(String nome)</code></td>
+                        <td><span class="badge badge-derived">Derived Query</span></td>
+                        <td>Busca autores cujo nome contenha o texto (case-insensitive)</td>
+                    </tr>
+                    <tr>
+                        <td><code>findByPaisIgnoreCase(String pais)</code></td>
+                        <td><span class="badge badge-derived">Derived Query</span></td>
+                        <td>Busca autores de um país específico (case-insensitive)</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="code-block">
+                <strong>Derived Queries:</strong><br>
+                O Spring Data JPA gera automaticamente a implementação baseado no nome do método.<br>
+                "findBy" + "Nome" + "Containing" + "IgnoreCase" → WHERE LOWER(nome) LIKE LOWER('%texto%')
+            </div>
+
+            <h3>2. EditoraRepository</h3>
+            <p class="description">
+                Interface para acesso aos dados de editoras. Estrutura similar ao AutorRepository.
+            </p>
+            <div class="code-block">
+                <strong>Métodos Herdados (JpaRepository):</strong><br>
+                • save(Editora) - Salva ou atualiza<br>
+                • findAll() - Lista todas<br>
+                • findById(Long) - Busca por ID<br>
+                • deleteById(Long) - Deleta por ID<br>
+                • count() - Conta total de registros
+            </div>
+            <h4>Queries Customizadas:</h4>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Método</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                    </tr>
+                    <tr>
+                        <td><code>findByNomeContainingIgnoreCase(String nome)</code></td>
+                        <td><span class="badge badge-derived">Derived Query</span></td>
+                        <td>Busca editoras cujo nome contenha o texto</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>3. LivroRepository</h3>
+            <p class="description">
+                Repository mais complexo, contém exemplos de Derived Queries, JPQL e Native Queries.
+                Demonstra diferentes formas de consultar dados no Spring Data JPA.
+            </p>
+            <div class="code-block">
+                <strong>Métodos Herdados (JpaRepository):</strong><br>
+                • save(Livro) - Salva ou atualiza<br>
+                • findAll() - Lista todos<br>
+                • findById(Long) - Busca por ID<br>
+                • deleteById(Long) - Deleta por ID<br>
+                • count() - Conta total de registros
+            </div>
+            <h4>Queries Customizadas:</h4>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Método</th>
+                        <th>Tipo</th>
+                        <th>Descrição</th>
+                        <th>Detalhes</th>
+                    </tr>
+                    <tr>
+                        <td><code>findByTituloContainingIgnoreCase</code></td>
+                        <td><span class="badge badge-derived">Derived</span></td>
+                        <td>Busca livros por título (parcial)</td>
+                        <td>Gerado automaticamente pelo Spring</td>
+                    </tr>
+                    <tr>
+                        <td><code>findByAutorIdJPQL</code></td>
+                        <td><span class="badge badge-jpql">JPQL</span></td>
+                        <td>Lista livros de um autor</td>
+                        <td>SELECT l FROM Livro l WHERE l.autor.id = :autorId</td>
+                    </tr>
+                    <tr>
+                        <td><code>findByEditoraIdJPQL</code></td>
+                        <td><span class="badge badge-jpql">JPQL</span></td>
+                        <td>Lista livros de uma editora</td>
+                        <td>SELECT l FROM Livro l WHERE l.editora.id = :editoraId</td>
+                    </tr>
+                    <tr>
+                        <td><code>listarQuantidadeDeLivrosPorEditora</code></td>
+                        <td><span class="badge badge-jpql">JPQL</span></td>
+                        <td>Estatísticas de livros por editora</td>
+                        <td>Usa GROUP BY e COUNT, retorna projeção</td>
+                    </tr>
+                    <tr>
+                        <td><code>listarQuantidadeDeAutoresPorEditora</code></td>
+                        <td><span class="badge badge-jpql">JPQL</span></td>
+                        <td>Estatísticas de autores por editora</td>
+                        <td>Usa COUNT(DISTINCT) e GROUP BY</td>
+                    </tr>
+                    <tr>
+                        <td><code>countByEditoraIdNative</code></td>
+                        <td><span class="badge badge-native">Native</span></td>
+                        <td>Conta livros de uma editora</td>
+                        <td>SQL puro: SELECT COUNT(*) FROM livro WHERE editora_id = ?</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="code-block">
+                <strong>Diferenças entre tipos de Query:</strong><br><br>
+                <strong>Derived Query:</strong> Spring gera SQL automaticamente baseado no nome do método<br>
+                • Vantagem: Simples, sem código SQL<br>
+                • Desvantagem: Limitado a queries simples<br><br>
+
+                <strong>JPQL (Java Persistence Query Language):</strong> SQL orientado a objetos<br>
+                • Vantagem: Trabalha com entidades Java, não tabelas<br>
+                • Usa: "Livro l" em vez de "livro", "l.autor.id" em vez de "autor_id"<br>
+                • Independente do banco de dados<br><br>
+
+                <strong>Native Query:</strong> SQL puro do banco de dados<br>
+                • Vantagem: Acesso total aos recursos do banco<br>
+                • Desvantagem: Dependente do banco, usa nomes físicos das colunas<br>
+                • Usa: "livro" (tabela), "editora_id" (coluna física)
+            </div>
+
+            <h4>Interfaces de Projeção:</h4>
+            <p class="description">
+                O sistema usa interfaces para projeções de queries que retornam dados agregados:
+            </p>
+            <ul>
+                <li><strong>EditoraLivroCount:</strong> Interface com getNome() e getTotal() para estatísticas de livros</li>
+                <li><strong>EditoraAutorCount:</strong> Interface com getNome() e getTotal() para estatísticas de autores</li>
+            </ul>
+            <div class="code-block">
+                Projeções permitem retornar apenas campos específicos em vez de entidades completas,<br>
+                otimizando queries de agregação e relatórios.
+            </div>
+        </div>
+
+        <div class="dev-section">
+            <h2>🔍 Queries Detalhadas</h2>
+            <p class="description">
+                Explicação aprofundada de cada query implementada no sistema, incluindo código SQL gerado e casos de uso.
+            </p>
+
+            <h3>Derived Query 1: Buscar Autores por Nome</h3>
+            <div class="code-block">
+                <strong>Método:</strong> findByNomeContainingIgnoreCase(String nome)<br>
+                <strong>Repository:</strong> AutorRepository<br>
+                <strong>SQL Gerado:</strong> SELECT * FROM autor WHERE LOWER(nome) LIKE LOWER('%?%')<br>
+                <strong>Uso:</strong> Busca parcial de autores, útil para autocomplete e filtros
+            </div>
+
+            <h3>Derived Query 2: Buscar Autores por País</h3>
+            <div class="code-block">
+                <strong>Método:</strong> findByPaisIgnoreCase(String pais)<br>
+                <strong>Repository:</strong> AutorRepository<br>
+                <strong>SQL Gerado:</strong> SELECT * FROM autor WHERE LOWER(pais) = LOWER(?)<br>
+                <strong>Uso:</strong> Filtrar autores por nacionalidade
+            </div>
+
+            <h3>Derived Query 3: Buscar Livros por Título</h3>
+            <div class="code-block">
+                <strong>Método:</strong> findByTituloContainingIgnoreCase(String titulo)<br>
+                <strong>Repository:</strong> LivroRepository<br>
+                <strong>SQL Gerado:</strong> SELECT * FROM livro WHERE LOWER(titulo) LIKE LOWER('%?%')<br>
+                <strong>Uso:</strong> Sistema de busca de livros na biblioteca
+            </div>
+
+            <h3>JPQL 1: Livros por Autor</h3>
+            <div class="code-block">
+                <strong>Método:</strong> findByAutorIdJPQL(Long autorId)<br>
+                <strong>Repository:</strong> LivroRepository<br>
+                <strong>JPQL:</strong> SELECT l FROM Livro l WHERE l.autor.id = :autorId<br>
+                <strong>SQL Gerado:</strong> SELECT * FROM livro WHERE autor_id = ?<br>
+                <strong>Uso:</strong> Listar todos os livros de um autor específico<br>
+                <strong>Nota:</strong> Usa navegação de objetos (l.autor.id) em vez de join explícito
+            </div>
+
+            <h3>JPQL 2: Livros por Editora</h3>
+            <div class="code-block">
+                <strong>Método:</strong> findByEditoraIdJPQL(Long editoraId)<br>
+                <strong>Repository:</strong> LivroRepository<br>
+                <strong>JPQL:</strong> SELECT l FROM Livro l WHERE l.editora.id = :editoraId<br>
+                <strong>SQL Gerado:</strong> SELECT * FROM livro WHERE editora_id = ?<br>
+                <strong>Uso:</strong> Listar catálogo de uma editora específica
+            </div>
+
+            <h3>JPQL 3: Estatísticas de Livros por Editora</h3>
+            <div class="code-block">
+                <strong>Método:</strong> listarQuantidadeDeLivrosPorEditora()<br>
+                <strong>Repository:</strong> LivroRepository<br>
+                <strong>JPQL:</strong> SELECT e.nome AS nome, COUNT(l) AS total<br>
+                FROM Livro l JOIN l.editora e<br>
+                GROUP BY e.nome<br>
+                ORDER BY COUNT(l) DESC<br>
+                <strong>Retorno:</strong> List&lt;EditoraLivroCount&gt; (projeção)<br>
+                <strong>Uso:</strong> Relatório de produtividade das editoras<br>
+                <strong>Nota:</strong> Usa agregação e ordenação, retorna apenas nome e total
+            </div>
+
+            <h3>JPQL 4: Estatísticas de Autores por Editora</h3>
+            <div class="code-block">
+                <strong>Método:</strong> listarQuantidadeDeAutoresPorEditora()<br>
+                <strong>Repository:</strong> LivroRepository<br>
+                <strong>JPQL:</strong> SELECT e.nome AS nome, COUNT(DISTINCT l.autor.id) AS total<br>
+                FROM Livro l JOIN l.editora e<br>
+                GROUP BY e.id, e.nome<br>
+                ORDER BY COUNT(DISTINCT l.autor.id) DESC<br>
+                <strong>Retorno:</strong> List&lt;EditoraAutorCount&gt; (projeção)<br>
+                <strong>Uso:</strong> Análise de diversidade de autores por editora<br>
+                <strong>Nota:</strong> Usa COUNT(DISTINCT) para contar autores únicos
+            </div>
+
+            <h3>Native Query: Contar Livros por Editora</h3>
+            <div class="code-block">
+                <strong>Método:</strong> countByEditoraIdNative(Long editoraId)<br>
+                <strong>Repository:</strong> LivroRepository<br>
+                <strong>SQL:</strong> SELECT COUNT(*) FROM livro WHERE editora_id = :editoraId<br>
+                <strong>Retorno:</strong> long (número primitivo)<br>
+                <strong>Uso:</strong> Contagem rápida de livros de uma editora<br>
+                <strong>Nota:</strong> Usa SQL nativo com nomes físicos de tabelas/colunas<br>
+                <strong>Diferença:</strong> Mais performático que JPQL para contagens simples
+            </div>
+        </div>
+
+        <div class="dev-section">
+            <h2>🖼️ Views (Templates HTML)</h2>
+            <p class="description">
+                O sistema utiliza Thymeleaf como template engine. Todas as views estendem template.html
+                que fornece layout base com header, navegação e footer.
+            </p>
+
+            <h3>template.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Layout base do sistema<br>
+                <strong>Componentes:</strong>
+            </p>
+            <ul>
+                <li><strong>Header:</strong> Logo da biblioteca, título e navegação desktop</li>
+                <li><strong>Navegação:</strong> Links para Início, Autores, Editoras, Livros, Queries, Seed</li>
+                <li><strong>Container:</strong> Área de conteúdo onde outras views são inseridas</li>
+                <li><strong>Footer:</strong> Informações de copyright</li>
+            </ul>
+            <div class="code-block">
+                Usa Thymeleaf Layout Dialect: layout:fragment="conteudo"<br>
+                Outras páginas decoram este template e preenchem o fragmento
+            </div>
+
+            <h3>index.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Página inicial do sistema<br>
+                <strong>Rota:</strong> / (HomeController)<br>
+                <strong>Conteúdo:</strong>
+            </p>
+            <ul>
+                <li>Hero section com título e descrição do sistema</li>
+                <li>Grid de 4 cards: Autores, Editoras, Livros, Consultas</li>
+                <li>Cada card tem descrição e botão de navegação</li>
+            </ul>
+
+            <h3>autores-lista.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Listagem de todos os autores<br>
+                <strong>Rota:</strong> /autores/view (AutorViewController)<br>
+                <strong>Dados:</strong> List&lt;Autor&gt; autores<br>
+                <strong>Funcionalidades:</strong>
+            </p>
+            <ul>
+                <li>Tabela com colunas: ID, Nome, País</li>
+                <li>Botões de ação: Editar e Deletar para cada autor</li>
+                <li>Botão "Novo Autor" no topo</li>
+                <li>Mensagem quando lista está vazia</li>
+            </ul>
+
+            <h3>autores-form.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Formulário de criação/edição de autor<br>
+                <strong>Rotas:</strong> /autores/formulario (novo) ou /autores/editar/{id} (edição)<br>
+                <strong>Dados:</strong> Autor autor (vazio para novo, preenchido para edição)<br>
+                <strong>Campos:</strong>
+            </p>
+            <ul>
+                <li>ID (hidden, apenas em edição)</li>
+                <li>Nome (required)</li>
+                <li>País</li>
+            </ul>
+            <div class="code-block">
+                Submete para: POST /autores/salvar<br>
+                Usa th:object="${autor}" e th:field para binding
+            </div>
+
+            <h3>editoras-lista.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Listagem de todas as editoras<br>
+                <strong>Rota:</strong> /editoras/view (EditoraViewController)<br>
+                <strong>Dados:</strong> List&lt;Editora&gt; editoras<br>
+                <strong>Estrutura:</strong> Similar a autores-lista.html
+            </p>
+            <ul>
+                <li>Tabela com: ID, Nome, Cidade</li>
+                <li>Ações: Editar e Deletar</li>
+                <li>Botão "Nova Editora"</li>
+            </ul>
+
+            <h3>editoras-form.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Formulário de criação/edição de editora<br>
+                <strong>Rotas:</strong> /editoras/formulario ou /editoras/editar/{id}<br>
+                <strong>Campos:</strong> ID (hidden), Nome (required), Cidade<br>
+                <strong>Submete para:</strong> POST /editoras/salvar
+            </p>
+
+            <h3>livros-lista.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Listagem de todos os livros<br>
+                <strong>Rota:</strong> /livros/view (LivroViewController)<br>
+                <strong>Dados:</strong> List&lt;Livro&gt; livros<br>
+                <strong>Funcionalidades:</strong>
+            </p>
+            <ul>
+                <li>Tabela com: ID, Título, Ano, ISBN, Autor, Editora</li>
+                <li>Exibe nome do autor e editora (navegação de objetos)</li>
+                <li>Ações: Editar e Deletar</li>
+                <li>Botão "Novo Livro"</li>
+            </ul>
+
+            <h3>livros-form.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Formulário de criação/edição de livro<br>
+                <strong>Rotas:</strong> /livros/formulario ou /livros/editar/{id}<br>
+                <strong>Dados:</strong> Livro livro, List&lt;Autor&gt; autores, List&lt;Editora&gt; editoras<br>
+                <strong>Campos:</strong>
+            </p>
+            <ul>
+                <li>ID (hidden)</li>
+                <li>Título (required)</li>
+                <li>Ano de Publicação</li>
+                <li>ISBN</li>
+                <li>Autor (dropdown select, required)</li>
+                <li>Editora (dropdown select, required)</li>
+            </ul>
+            <div class="code-block">
+                Submete para: POST /livros/salvar<br>
+                Envia autorId e editoraId separadamente<br>
+                Dropdowns populados com th:each sobre listas de autores/editoras
+            </div>
+
+            <h3>queries.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Interface para executar queries de demonstração<br>
+                <strong>Rota:</strong> /queries (QueryController)<br>
+                <strong>Dados:</strong> todosAutores, todasEditoras, todosPaises, resultados (opcional)<br>
+                <strong>Funcionalidades:</strong>
+            </p>
+            <ul>
+                <li>6 formulários diferentes, um para cada tipo de query</li>
+                <li>Query 1: Buscar autores por nome (input text)</li>
+                <li>Query 2: Buscar autores por país (dropdown)</li>
+                <li>Query 3: Livros por autor (dropdown de autores)</li>
+                <li>Query 4: Estatísticas de autores por editora (sem parâmetros)</li>
+                <li>Query 5: Contar livros por editora (dropdown de editoras)</li>
+                <li>Query 6: Livros por editora (dropdown de editoras)</li>
+                <li>Área de resultados que exibe dados retornados</li>
+                <li>Badges indicando tipo de query (Derived, JPQL, Native)</li>
+            </ul>
+            <div class="code-block">
+                Cada formulário submete para: POST /queries/executar/{tipo}<br>
+                Resultados exibidos na mesma página usando Thymeleaf conditionals<br>
+                Suporta diferentes tipos de resultado: listas, contagens, estatísticas
+            </div>
+
+            <h3>query-executor.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Página alternativa para executar queries individuais<br>
+                <strong>Rota:</strong> /queries/executar/{queryType} (QueryController)<br>
+                <strong>Uso:</strong> Demonstração educacional de queries específicas
+            </p>
+
+            <h3>seed.html</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Interface para gerenciar dados de teste<br>
+                <strong>Rota:</strong> /seed (SeedController)<br>
+                <strong>Dados:</strong> totalAutores, totalEditoras, totalLivros<br>
+                <strong>Funcionalidades:</strong>
+            </p>
+            <ul>
+                <li>Exibe contadores de registros atuais</li>
+                <li>Botão "Popular Banco" - cria dados de exemplo</li>
+                <li>Botão "Limpar Banco" - remove todos os dados</li>
+                <li>Mensagens de sucesso/erro usando flash attributes</li>
+                <li>Avisos de segurança antes de ações destrutivas</li>
+            </ul>
+            <div class="code-block">
+                Popular: POST /seed/populate (cria 5 autores, 4 editoras, 12 livros)<br>
+                Limpar: POST /seed/clear (deleta tudo respeitando foreign keys)<br>
+                Usa RedirectAttributes para mensagens flash
+            </div>
+
+            <h3>desenvolvimento.html (esta página)</h3>
+            <p class="description">
+                <strong>Propósito:</strong> Documentação técnica completa do sistema<br>
+                <strong>Rota:</strong> /dev (DevController)<br>
+                <strong>Conteúdo:</strong> Explicações detalhadas de controllers, repositories, queries e views<br>
+                <strong>Público-alvo:</strong> Desenvolvedores e testadores
+            </p>
+        </div>
+
+        <div class="dev-section">
+            <h2>🏗️ Arquitetura do Sistema</h2>
+            <p class="description">
+                O sistema segue uma arquitetura em camadas típica de aplicações Spring Boot:
+            </p>
+
+            <h3>Camadas da Aplicação</h3>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Camada</th>
+                        <th>Responsabilidade</th>
+                        <th>Componentes</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Presentation</strong></td>
+                        <td>Interface com usuário</td>
+                        <td>Controllers (@Controller, @RestController), Views (HTML)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Business</strong></td>
+                        <td>Lógica de negócio</td>
+                        <td>Controllers (validações, regras)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Persistence</strong></td>
+                        <td>Acesso a dados</td>
+                        <td>Repositories (JpaRepository)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Domain</strong></td>
+                        <td>Modelo de dados</td>
+                        <td>Entities (Autor, Editora, Livro)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>Fluxo de Requisição</h3>
+            <div class="code-block">
+                1. <strong>Cliente</strong> faz requisição HTTP (browser ou API client)<br>
+                2. <strong>Controller</strong> recebe requisição e valida dados<br>
+                3. <strong>Repository</strong> é chamado para acessar banco de dados<br>
+                4. <strong>JPA/Hibernate</strong> executa SQL no banco<br>
+                5. <strong>Dados</strong> retornam através das camadas<br>
+                6. <strong>Controller</strong> prepara resposta (JSON ou View)<br>
+                7. <strong>Cliente</strong> recebe resposta
+            </div>
+
+            <h3>Padrões Utilizados</h3>
+            <ul>
+                <li><strong>Repository Pattern:</strong> Abstração do acesso a dados</li>
+                <li><strong>DTO Pattern:</strong> LivroDTO para transferência de dados</li>
+                <li><strong>MVC Pattern:</strong> Model-View-Controller para web</li>
+                <li><strong>REST Pattern:</strong> APIs RESTful com verbos HTTP</li>
+                <li><strong>Dependency Injection:</strong> Injeção via construtor</li>
+                <li><strong>Exception Handling:</strong> GlobalExceptionHandler centralizado</li>
+            </ul>
+
+            <h3>Relacionamentos entre Entidades</h3>
+            <div class="code-block">
+                <strong>Livro</strong> N:1 <strong>Autor</strong> (ManyToOne)<br>
+                • Um livro tem um autor<br>
+                • Um autor pode ter vários livros<br>
+                • Campo: autor_id (foreign key)<br><br>
+
+                <strong>Livro</strong> N:1 <strong>Editora</strong> (ManyToOne)<br>
+                • Um livro tem uma editora<br>
+                • Uma editora pode ter vários livros<br>
+                • Campo: editora_id (foreign key)<br><br>
+
+                <strong>Integridade Referencial:</strong><br>
+                • Não é possível deletar autor com livros associados<br>
+                • Livros devem ter autor e editora (optional = false)
+            </div>
+        </div>
+
+        <div class="dev-section">
+            <h2>⚙️ Tecnologias Utilizadas</h2>
+            <div class="table-container">
+                <table>
+                    <tr>
+                        <th>Tecnologia</th>
+                        <th>Versão</th>
+                        <th>Uso</th>
+                    </tr>
+                    <tr>
+                        <td>Spring Boot</td>
+                        <td>3.x</td>
+                        <td>Framework principal da aplicação</td>
+                    </tr>
+                    <tr>
+                        <td>Spring Data JPA</td>
+                        <td>3.x</td>
+                        <td>Persistência e acesso a dados</td>
+                    </tr>
+                    <tr>
+                        <td>Hibernate</td>
+                        <td>6.x</td>
+                        <td>ORM (implementação JPA)</td>
+                    </tr>
+                    <tr>
+                        <td>Thymeleaf</td>
+                        <td>3.x</td>
+                        <td>Template engine para views</td>
+                    </tr>
+                    <tr>
+                        <td>H2 Database</td>
+                        <td>2.x</td>
+                        <td>Banco de dados em memória (dev)</td>
+                    </tr>
+                    <tr>
+                        <td>Jakarta Validation</td>
+                        <td>3.x</td>
+                        <td>Validação de dados (@NotBlank, @Valid)</td>
+                    </tr>
+                    <tr>
+                        <td>Maven</td>
+                        <td>3.x</td>
+                        <td>Gerenciamento de dependências</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="dev-section">
+            <h2>📡 Resumo de Endpoints</h2>
+
+            <h3>REST API (JSON)</h3>
+            <div class="code-block">
+                <strong>Autores:</strong><br>
+                GET    /autores           - Lista todos<br>
+                GET    /autores/{id}      - Busca por ID<br>
+                POST   /autores           - Cria novo<br>
+                PUT    /autores/{id}      - Atualiza<br>
+                DELETE /autores/{id}      - Deleta<br><br>
+
+                <strong>Editoras:</strong><br>
+                GET    /editoras          - Lista todas<br>
+                GET    /editoras/{id}     - Busca por ID<br>
+                POST   /editoras          - Cria nova<br>
+                PUT    /editoras/{id}     - Atualiza<br>
+                DELETE /editoras/{id}     - Deleta<br><br>
+
+                <strong>Livros:</strong><br>
+                GET    /livros            - Lista todos<br>
+                GET    /livros/{id}       - Busca por ID<br>
+                GET    /livros/search?titulo=X - Busca por título<br>
+                POST   /livros            - Cria novo<br>
+                PUT    /livros/{id}       - Atualiza<br>
+                DELETE /livros/{id}       - Deleta<br><br>
+
+                <strong>Queries (API):</strong><br>
+                GET /queries/api/derived/autores-por-nome?nome=X<br>
+                GET /queries/api/derived/autores-por-pais?pais=X<br>
+                GET /queries/api/jpql/livros-por-autor?autorId=X<br>
+                GET /queries/api/jpql/estatisticas-editora<br>
+                GET /queries/api/native/contar-livros-editora?editoraId=X<br>
+                GET /queries/api/jpql/livros-por-editora?editoraId=X
+            </div>
+
+            <h3>Web Interface (HTML)</h3>
+            <div class="code-block">
+                GET  /                      - Página inicial<br>
+                GET  /autores/view          - Lista autores<br>
+                GET  /autores/formulario    - Formulário novo autor<br>
+                GET  /autores/editar/{id}   - Formulário editar autor<br>
+                POST /autores/salvar        - Salva autor<br>
+                GET  /autores/deletar/{id}  - Deleta autor<br><br>
+
+                GET  /editoras/view         - Lista editoras<br>
+                GET  /editoras/formulario   - Formulário nova editora<br>
+                GET  /editoras/editar/{id}  - Formulário editar editora<br>
+                POST /editoras/salvar       - Salva editora<br>
+                GET  /editoras/deletar/{id} - Deleta editora<br><br>
+
+                GET  /livros/view           - Lista livros<br>
+                GET  /livros/formulario     - Formulário novo livro<br>
+                GET  /livros/editar/{id}    - Formulário editar livro<br>
+                POST /livros/salvar         - Salva livro<br>
+                GET  /livros/deletar/{id}   - Deleta livro<br><br>
+
+                GET  /queries               - Interface de queries<br>
+                POST /queries/executar/*    - Executa queries<br><br>
+
+                GET  /seed                  - Interface de seed<br>
+                POST /seed/populate         - Popula banco<br>
+                POST /seed/clear            - Limpa banco<br><br>
+
+                GET  /dev                   - Esta documentação
+            </div>
+        </div>
+
+        <div class="dev-section">
+            <p style="text-align: center; color: #7f8c8d; font-style: italic;">
+                Documentação gerada para auxiliar no desenvolvimento e testes do Sistema de Biblioteca.<br>
+                Para voltar ao sistema, use o menu de navegação acima.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

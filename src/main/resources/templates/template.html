@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca</title>
+    <link rel="stylesheet" href="/css/estilo.css?v=5">
+</head>
+<body>
+<header>
+    <div class="container">
+        <div class="header-content">
+            <div class="header-logo-container">
+                <img src="/css/images/logo-biblioteca-2.png" alt="Logo Biblioteca" class="header-logo">
+            </div>
+            <div class="header-text">
+                <h1>BIBLIOTECA</h1>
+                <p>Sistema de Gerenciamento Bibliográfico</p>
+            </div>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="/">Início</a></li>
+                    <li><a href="/autores/view">Autores</a></li>
+                    <li><a href="/editoras/view">Editoras</a></li>
+                    <li><a href="/livros/view">Livros</a></li>
+                    <li><a href="/queries">Queries</a></li>
+                    <li><a href="/seed">Seed</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div layout:fragment="conteudo"></div>
+</div>
+
+<footer>
+    <p>&copy; 2025 UNIFENAS Sistema de Biblioteca -  Rafael e Lucca</p>
+</footer>
+
+</body>
+</html>
