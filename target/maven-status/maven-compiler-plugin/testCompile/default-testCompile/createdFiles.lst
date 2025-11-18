@@ -1,0 +1,5 @@
+com\example\biblioteca_api\controller\AutorControllerTest.class
+com\example\biblioteca_api\controller\EditoraControllerTest.class
+com\example\biblioteca_api\BibliotecaApiApplicationTests.class
+com\example\biblioteca_api\controller\LivroControllerTest.class
+com\example\biblioteca_api\repository\LivroRepositoryTest.class
