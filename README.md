@@ -137,32 +137,6 @@ java -jar target/biblioteca-api-0.0.1-SNAPSHOT.jar
 - **Documentação de Testes**: http://localhost:8080/testes
 - **Documentação Técnica**: http://localhost:8080/dev
 
-## Estrutura do Projeto
-
-\`\`\`
-biblioteca-api/
-├── src/
-│   ├── main/
-│   │   ├── java/com/example/biblioteca_api/
-│   │   │   ├── config/          # Configurações e inicializadores
-│   │   │   ├── controller/      # Controllers REST e View
-│   │   │   ├── dto/             # Data Transfer Objects
-│   │   │   ├── model/           # Entidades JPA (Autor, Editora, Livro)
-│   │   │   └── repository/      # Repositories Spring Data JPA
-│   │   └── resources/
-│   │       ├── static/css/      # Arquivos CSS
-│   │       ├── templates/       # Views Thymeleaf
-│   │       └── application.properties
-│   └── test/
-│       ├── java/                # Classes de teste JUnit
-│       │   ├── controller/      # Testes de controllers
-│       │   └── repository/      # Testes de repositories
-│       └── resources/
-│           └── application-test.properties
-├── pom.xml                      # Dependências Maven
-└── README.md                    # Este arquivo
-\`\`\`
-
 ## Endpoints da API
 
 ### Autores
