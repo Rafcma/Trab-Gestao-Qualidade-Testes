@@ -35,6 +35,9 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="338NB8NB7LdmGWdeJWt9mC650Py" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -43,13 +46,12 @@
   &quot;keyToString&quot;: {
     &quot;Application.BibliotecaApiApplication.executor&quot;: &quot;Run&quot;,
     &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-<<<<<<< Updated upstream
+
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Usuario/Desktop/Faculdade/JAVA - IntelliJ/Projeto Final - Topicos em Tec/biblioteca-api&quot;,
-=======
     &quot;JUnit.AutorControllerTest.executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
@@ -59,7 +61,6 @@
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Usuario/Desktop/Faculdade/JAVA - IntelliJ/Projeto Final - Topicos em Tec/biblioteca-api/Trab-Gestao-Qualidade-Testes&quot;,
->>>>>>> Stashed changes
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;
   }
 }</component>
@@ -68,11 +69,7 @@
       <recent name="D:\Usuario\Desktop\Faculdade\JAVA - IntelliJ\Projeto Final - Topicos em Tec\biblioteca-api\src\main\resources\static\css\images" />
     </key>
   </component>
-<<<<<<< Updated upstream
-  <component name="RunManager">
-=======
-  <component name="RunManager" selected="JUnit.EditoraControllerTest">
->>>>>>> Stashed changes
+  <component name="RunManager" selected="JUnit.LivroControllerTest">
     <configuration name="BibliotecaApiApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.biblioteca_api.BibliotecaApiApplication" />
       <module name="biblioteca-api" />
@@ -86,10 +83,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-<<<<<<< Updated upstream
-    <recent_temporary>
-      <list>
-=======
     <configuration name="AutorControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="biblioteca-api" />
       <extension name="coverage">
@@ -120,11 +113,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="LivroControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="biblioteca-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.biblioteca_api.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.biblioteca_api.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.example.biblioteca_api.controller.LivroControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.LivroControllerTest" />
         <item itemvalue="JUnit.EditoraControllerTest" />
         <item itemvalue="JUnit.AutorControllerTest" />
->>>>>>> Stashed changes
         <item itemvalue="Application.BibliotecaApiApplication" />
       </list>
     </recent_temporary>
