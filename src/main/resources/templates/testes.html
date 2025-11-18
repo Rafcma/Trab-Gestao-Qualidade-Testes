@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{template.html}">
+<body>
+<div layout:fragment="conteudo">
+    <div class="hero">
+        <h2>Documentação dos Testes Unitários</h2>
+        <p>Explicação detalhada dos 10 testes JUnit implementados no sistema</p>
+    </div>
+
+    <!-- Resumo em card único sem sobreposição -->
+    <div class="card" style="margin-bottom: 2rem;">
+        <h3>Resumo dos Testes</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Classe de Teste</th>
+                <th>Quantidade</th>
+                <th>Descrição</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><code>AutorControllerTest</code></td>
+                <td>3 testes</td>
+                <td>Testa operações CRUD de autores</td>
+            </tr>
+            <tr>
+                <td><code>EditoraControllerTest</code></td>
+                <td>2 testes</td>
+                <td>Testa criação e listagem de editoras</td>
+            </tr>
+            <tr>
+                <td><code>LivroControllerTest</code></td>
+                <td>3 testes</td>
+                <td>Testa operações de livros com relacionamentos</td>
+            </tr>
+            <tr>
+                <td><code>LivroRepositoryTest</code></td>
+                <td>2 testes</td>
+                <td>Testa queries customizadas JPQL e Native SQL</td>
+            </tr>
+            <tr>
+                <td><strong>TOTAL</strong></td>
+                <td><strong>10 testes</strong></td>
+                <td><strong>Cobertura completa do sistema</strong></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Testes em accordion expansível como queries.html -->
+    <div class="query-accordion">
+        <!-- AutorControllerTest -->
+        <h3 style="color: var(--primary); margin: 2rem 0 1rem 0; font-size: 1.75rem;">AutorControllerTest (3 testes)</h3>
+
+        <!-- Teste 1 -->
+        <div class="query-item" id="test1">
+            <button class="query-button" onclick="toggleQuery('test1')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 1: Criar Autor com Sucesso</span>
+                    <span class="query-badge">CRUD</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se um novo autor é criado corretamente no banco de dados
+                    </div>
+
+                    <!-- Corrigindo alinhamento dos passos com padding-left -->
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria um objeto Autor com nome "Machado de Assis" e país "Brasil"</li>
+                        <li>Chama o método criar() do controller</li>
+                        <li>Verifica se o ID foi gerado automaticamente</li>
+                        <li>Verifica se os dados foram salvos corretamente</li>
+                        <li>Confirma que o autor existe no banco usando existsById()</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Autor criado com sucesso e persistido no banco H2</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teste 2 -->
+        <div class="query-item" id="test2">
+            <button class="query-button" onclick="toggleQuery('test2')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 2: Listar Todos os Autores</span>
+                    <span class="query-badge">CRUD</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se a listagem retorna todos os autores cadastrados
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria e salva "Machado de Assis" no banco</li>
+                        <li>Cria e salva "Clarice Lispector" no banco</li>
+                        <li>Chama o método listar() do controller</li>
+                        <li>Verifica se a lista não é nula</li>
+                        <li>Verifica se a lista contém pelo menos 2 autores</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Lista contendo todos os autores cadastrados</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teste 3 -->
+        <div class="query-item" id="test3">
+            <button class="query-button" onclick="toggleQuery('test3')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 3: Deletar Autor Sem Livros</span>
+                    <span class="query-badge">CRUD</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se um autor pode ser deletado quando não possui livros associados
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria e salva um autor no banco</li>
+                        <li>Verifica que existe 1 autor no banco (count = 1)</li>
+                        <li>Chama o método deletar() passando o ID do autor</li>
+                        <li>Verifica que o autor não existe mais usando existsById()</li>
+                        <li>Confirma que o count é 0 após a deleção</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Autor deletado com sucesso, banco de dados vazio</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- EditoraControllerTest -->
+        <h3 style="color: var(--primary); margin: 2rem 0 1rem 0; font-size: 1.75rem;">EditoraControllerTest (2 testes)</h3>
+
+        <!-- Teste 4 -->
+        <div class="query-item" id="test4">
+            <button class="query-button" onclick="toggleQuery('test4')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 4: Criar Editora com Sucesso</span>
+                    <span class="query-badge">CRUD</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se uma nova editora é criada corretamente
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria um objeto Editora com nome "Companhia das Letras" e cidade "São Paulo"</li>
+                        <li>Chama o método criar() do controller</li>
+                        <li>Verifica se o ID foi gerado</li>
+                        <li>Verifica se nome e cidade foram salvos corretamente</li>
+                        <li>Confirma que a editora existe no banco</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Editora criada e persistida com sucesso</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teste 5 -->
+        <div class="query-item" id="test5">
+            <button class="query-button" onclick="toggleQuery('test5')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 5: Listar Todas as Editoras</span>
+                    <span class="query-badge">CRUD</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se a listagem retorna todas as editoras
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria e salva "Companhia das Letras" em São Paulo</li>
+                        <li>Cria e salva "Globo Livros" no Rio de Janeiro</li>
+                        <li>Chama o método listar() do controller</li>
+                        <li>Verifica se a lista contém pelo menos 2 editoras</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Lista com todas as editoras cadastradas</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LivroControllerTest -->
+        <h3 style="color: var(--primary); margin: 2rem 0 1rem 0; font-size: 1.75rem;">LivroControllerTest (3 testes)</h3>
+
+        <!-- Teste 6 -->
+        <div class="query-item" id="test6">
+            <button class="query-button" onclick="toggleQuery('test6')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 6: Criar Livro com Autor e Editora Válidos</span>
+                    <span class="query-badge">Relacionamentos</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se um livro é criado corretamente com relacionamentos
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria e salva um autor "Jorge Amado" do Brasil</li>
+                        <li>Cria e salva uma editora "Record" do Rio de Janeiro</li>
+                        <li>Cria um LivroDTO com título "Capitães da Areia", ano 1937, ISBN e IDs</li>
+                        <li>Chama o método criar() do controller passando o DTO</li>
+                        <li>Verifica se o livro foi criado com ID gerado</li>
+                        <li>Verifica se título, ano, autor e editora foram associados corretamente</li>
+                        <li>Confirma que o livro existe no banco</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Livro criado com todos os relacionamentos corretos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teste 7 -->
+        <div class="query-item" id="test7">
+            <button class="query-button" onclick="toggleQuery('test7')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 7: Buscar Livro por Título</span>
+                    <span class="query-badge">Busca</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se a busca por título funciona corretamente (case insensitive)
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria autor "Machado de Assis" e editora "Garnier"</li>
+                        <li>Cria e salva o livro "Dom Casmurro" de 1899</li>
+                        <li>Chama o repository com findByTituloContainingIgnoreCase("Dom")</li>
+                        <li>Verifica se o resultado não é nulo e não está vazio</li>
+                        <li>Confirma que o título encontrado contém "Dom"</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Busca retorna o livro "Dom Casmurro"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teste 8 -->
+        <div class="query-item" id="test8">
+            <button class="query-button" onclick="toggleQuery('test8')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 8: Atualizar Informações do Livro</span>
+                    <span class="query-badge">CRUD</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se as informações de um livro podem ser atualizadas
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria autor "Clarice Lispector" e editora "Rocco"</li>
+                        <li>Cria livro "A Hora da Estrela" de 1977</li>
+                        <li>Salva o livro e guarda seu ID</li>
+                        <li>Cria um novo DTO com título "A Hora da Estrela - Edição Revisada" e ano 1978</li>
+                        <li>Chama o método atualizar() do controller</li>
+                        <li>Verifica se o ano foi atualizado para 1978</li>
+                        <li>Verifica se o título contém "Edição Revisada"</li>
+                        <li>Confirma que o ID permaneceu o mesmo</li>
+                    </ol>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Livro atualizado mantendo o mesmo ID</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- LivroRepositoryTest -->
+        <h3 style="color: var(--primary); margin: 2rem 0 1rem 0; font-size: 1.75rem;">LivroRepositoryTest (2 testes)</h3>
+
+        <!-- Teste 9 -->
+        <div class="query-item" id="test9">
+            <button class="query-button" onclick="toggleQuery('test9')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 9: Query JPQL - Listar Livros por Editora</span>
+                    <span class="query-badge">JPQL Query</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se a query customizada JPQL retorna apenas livros de uma editora específica
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria 2 autores e 2 editoras</li>
+                        <li>Cria 2 livros para "Editora Teste 1" e 1 livro para "Editora Teste 2"</li>
+                        <li>Chama findByEditoraIdJPQL() passando o ID da Editora 1</li>
+                        <li>Verifica se retornou exatamente 2 livros</li>
+                        <li>Confirma que todos os livros são da Editora 1</li>
+                    </ol>
+
+                    <div class="query-code" style="margin: 1.5rem 0;">
+                        <strong style="color: var(--primary);">Query JPQL testada:</strong>
+                        <pre style="margin-top: 0.5rem; background: var(--background-light); padding: 1rem; border-radius: 8px; overflow-x: auto;">SELECT l FROM Livro l WHERE l.editora.id = :editoraId</pre>
+                    </div>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Apenas os 2 livros da Editora 1</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Teste 10 -->
+        <div class="query-item" id="test10">
+            <button class="query-button" onclick="toggleQuery('test10')" type="button">
+                <div class="query-button-content">
+                    <span>Teste 10: Query Native SQL - Contar Autores por Editora</span>
+                    <span class="query-badge">Native Query</span>
+                </div>
+                <span class="query-icon">▼</span>
+            </button>
+            <div class="query-content">
+                <div class="query-content-inner">
+                    <div class="query-description">
+                        Verifica se a query SQL nativa conta corretamente autores distintos por editora
+                    </div>
+
+                    <h4 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Passos do teste:</h4>
+                    <ol style="margin-left: 1.5rem; line-height: 1.8;">
+                        <li>Cria 2 autores diferentes</li>
+                        <li>Cria 2 editoras</li>
+                        <li>Cria 2 livros da Editora 1 (cada um de um autor diferente)</li>
+                        <li>Cria 1 livro da Editora 2</li>
+                        <li>Chama listarQuantidadeDeAutoresPorEditora()</li>
+                        <li>Verifica se o resultado contém informações das editoras</li>
+                        <li>Confirma que a Editora 1 tem 2 autores distintos</li>
+                    </ol>
+
+                    <div class="query-code" style="margin: 1.5rem 0;">
+                        <strong style="color: var(--primary);">Query Native SQL testada:</strong>
+                        <pre style="margin-top: 0.5rem; background: var(--background-light); padding: 1rem; border-radius: 8px; overflow-x: auto;">SELECT e.nome, COUNT(DISTINCT l.autor_id) as total
+FROM editora e
+JOIN livro l ON e.id = l.editora_id
+GROUP BY e.nome</pre>
+                    </div>
+
+                    <div class="results-section">
+                        <div class="results-header">
+                            <div>
+                                <h4 style="margin-bottom: 0.5rem;">Resultado esperado:</h4>
+                            </div>
+                        </div>
+                        <div class="results-content">
+                            <p style="margin: 0;">Editora 1 com 2 autores, Editora 2 com 1 autor</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reorganizando os últimos cards com novo layout e estilo moderno -->
+    <div style="display: flex; gap: 2rem; margin-top: 3rem; flex-wrap: wrap;">
+        <!-- Card Estrutura dos Testes - Estilo moderno -->
+        <div class="card" style="flex: 1; min-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">Estrutura dos Testes</h3>
+            <p style="line-height: 1.6; margin-bottom: 1.5rem; color: var(--text);">Todos os testes seguem o padrão AAA (Arrange-Act-Assert):</p>
+            <ul style="margin-left: 1.5rem; line-height: 1.8; color: var(--text);">
+                <li><strong style="color: var(--primary);">Arrange (Preparar):</strong> Configurar dados de teste necessários</li>
+                <li><strong style="color: var(--primary);">Act (Agir):</strong> Executar a ação que será testada</li>
+                <li><strong style="color: var(--primary);">Assert (Verificar):</strong> Validar se o resultado está correto</li>
+            </ul>
+
+            <h4 style="color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.15rem;">Anotações importantes:</h4>
+            <ul style="margin-left: 1.5rem; line-height: 1.8; color: var(--text);">
+                <li><code style="background: var(--background-light); padding: 0.2rem 0.5rem; border-radius: 4px;">@SpringBootTest</code> - Carrega contexto completo do Spring</li>
+                <li><code style="background: var(--background-light); padding: 0.2rem 0.5rem; border-radius: 4px;">@ActiveProfiles("test")</code> - Usa banco H2 em memória</li>
+                <li><code style="background: var(--background-light); padding: 0.2rem 0.5rem; border-radius: 4px;">@Transactional</code> - Rollback automático após cada teste</li>
+                <li><code style="background: var(--background-light); padding: 0.2rem 0.5rem; border-radius: 4px;">@DisplayName</code> - Nome descritivo em português</li>
+            </ul>
+        </div>
+
+        <!-- Card Ferramentas Utilizadas -->
+        <div class="card" style="flex: 1; min-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">Ferramentas Utilizadas</h3>
+            <ul style="margin-left: 1.5rem; line-height: 1.8; color: var(--text);">
+                <li><strong style="color: var(--primary);">JUnit 5:</strong> Framework de testes para Java</li>
+                <li><strong style="color: var(--primary);">Spring Boot Test:</strong> Integração com Spring Boot</li>
+                <li><strong style="color: var(--primary);">H2 Database:</strong> Banco em memória para testes</li>
+                <li><strong style="color: var(--primary);">Maven Surefire:</strong> Plugin para execução de testes</li>
+                <li><strong style="color: var(--primary);">AssertJ:</strong> Biblioteca de assertivas fluente</li>
+                <li><strong style="color: var(--primary);">Mockito:</strong> Framework de mocking (se necessário)</li>
+            </ul>
+
+            <h4 style="color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.15rem;">Benefícios:</h4>
+            <ul style="margin-left: 1.5rem; line-height: 1.8; color: var(--text);">
+                <li>Testes rápidos e isolados</li>
+                <li>Sem necessidade de banco real</li>
+                <li>Fácil integração com CI/CD</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Segundo par de cards lado a lado: Como Executar e Boas Práticas -->
+    <div style="display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+        <!-- Card Como Executar os Testes - Reformatado com estilo moderno -->
+        <div class="card" style="flex: 1; min-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">Como Executar os Testes</h3>
+
+            <h4 style="color: var(--primary); margin-top: 1rem; margin-bottom: 0.75rem; font-size: 1.15rem;">Via Maven Wrapper (Windows):</h4>
+            <pre style="background: var(--background-light); padding: 1rem; border-radius: 8px; overflow-x: auto; line-height: 1.6;"><code>mvnw test                                    # Executa todos os 10 testes
+mvnw test -Dtest=AutorControllerTest         # Executa apenas AutorControllerTest
+mvnw clean test site                         # Gera relatório HTML profissional</code></pre>
+
+            <h4 style="color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.15rem;">Via IntelliJ IDEA:</h4>
+            <ol style="margin-left: 1.5rem; line-height: 1.8; color: var(--text);">
+                <li>Clique com botão direito na pasta <code style="background: var(--background-light); padding: 0.2rem 0.5rem; border-radius: 4px;">src/test/java</code></li>
+                <li>Selecione "Run 'All Tests'"</li>
+                <li>Veja os resultados na aba de testes</li>
+            </ol>
+
+            <h4 style="color: var(--primary); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1.15rem;">Relatório HTML:</h4>
+            <p style="line-height: 1.6; color: var(--text);">Após executar <code style="background: var(--background-light); padding: 0.2rem 0.5rem; border-radius: 4px;">mvnw clean test site</code>, abra: <code style="background: var(--background-light); padding: 0.2rem 0.5rem; border-radius: 4px;">target/site/surefire-report.html</code></p>
+        </div>
+
+        <!-- Card Boas Práticas - Lado a lado com Como Executar -->
+        <div class="card" style="flex: 1; min-width: 400px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <h3 style="color: var(--primary); margin-bottom: 1rem; font-size: 1.5rem;">Boas Práticas Implementadas</h3>
+            <ul style="margin-left: 1.5rem; line-height: 1.8; color: var(--text);">
+                <li>Testes isolados e independentes entre si</li>
+                <li>Uso de banco H2 em memória (não afeta produção)</li>
+                <li>Rollback automático após cada teste</li>
+                <li>Nomes descritivos em português</li>
+                <li>Verificação completa com múltiplas assertivas</li>
+                <li>Cobertura de operações CRUD e queries customizadas</li>
+                <li>Teste de relacionamentos entre entidades</li>
+                <li>Validação de integridade referencial</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- JavaScript para funcionalidade accordion -->
+    <script th:inline="javascript">
+        function toggleQuery(queryId) {
+            const item = document.getElementById(queryId);
+            const wasActive = item.classList.contains('active');
+
+            // Fecha todos os outros testes
+            document.querySelectorAll('.query-item').forEach(el => {
+                if (el.id !== queryId) {
+                    el.classList.remove('active');
+                }
+            });
+
+            // Toggle no teste atual
+            if (wasActive) {
+                item.classList.remove('active');
+            } else {
+                item.classList.add('active');
+            }
+        }
+    </script>
+</div>
+</body>
+</html>
