@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c4549f6b-7557-43cb-8253-5bf81f1c1d98" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/example/biblioteca_api/controller/AutorControllerTest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/resources/application-test.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/biblioteca_api/config/GeradorInicial.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/biblioteca_api/config/GeradorInicial.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/example/biblioteca_api/config/GeradorInicial.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/example/biblioteca_api/config/GeradorInicial.class" afterDir="false" />
-    </list>
+    <list default="true" id="c4549f6b-7557-43cb-8253-5bf81f1c1d98" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,13 +16,10 @@
         <option value="Exception" />
         <option value="Python Script" />
         <option value="Interface" />
-        <option value="HTML File" />
         <option value="Class" />
+        <option value="HTML File" />
       </list>
     </option>
-  </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -46,35 +35,44 @@
   &quot;associatedIndex&quot;: 4
 }</component>
   <component name="ProjectId" id="338NB8NB7LdmGWdeJWt9mC650Py" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.BibliotecaApiApplication.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "JUnit.AutorControllerTest.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "feature/testes-autor-controller",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Usuario/Desktop/Faculdade/JAVA - IntelliJ/Projeto Final - Topicos em Tec/biblioteca-api/Trab-Gestao-Qualidade-Testes",
-    "run.code.analysis.last.selected.profile": "pProject Default"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.BibliotecaApiApplication.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+<<<<<<< Updated upstream
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Usuario/Desktop/Faculdade/JAVA - IntelliJ/Projeto Final - Topicos em Tec/biblioteca-api&quot;,
+=======
+    &quot;JUnit.AutorControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feature/testes-autor-controller&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Usuario/Desktop/Faculdade/JAVA - IntelliJ/Projeto Final - Topicos em Tec/biblioteca-api/Trab-Gestao-Qualidade-Testes&quot;,
+>>>>>>> Stashed changes
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Usuario\Desktop\Faculdade\JAVA - IntelliJ\Projeto Final - Topicos em Tec\biblioteca-api\src\main\resources\static\css\images" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.AutorControllerTest">
+<<<<<<< Updated upstream
+  <component name="RunManager">
+=======
+  <component name="RunManager" selected="JUnit.EditoraControllerTest">
+>>>>>>> Stashed changes
     <configuration name="BibliotecaApiApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.biblioteca_api.BibliotecaApiApplication" />
       <module name="biblioteca-api" />
@@ -88,6 +86,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+<<<<<<< Updated upstream
+    <recent_temporary>
+      <list>
+=======
     <configuration name="AutorControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="biblioteca-api" />
       <extension name="coverage">
@@ -103,9 +105,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="EditoraControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="biblioteca-api" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.biblioteca_api.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.biblioteca_api.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.example.biblioteca_api.controller.EditoraControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.EditoraControllerTest" />
         <item itemvalue="JUnit.AutorControllerTest" />
+>>>>>>> Stashed changes
         <item itemvalue="Application.BibliotecaApiApplication" />
       </list>
     </recent_temporary>
